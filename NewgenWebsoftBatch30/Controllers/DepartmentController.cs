@@ -40,5 +40,86 @@ namespace NewgenWebsoftBatch30.Controllers
             }
             return View(department);
         }
+
+        
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (id>0)
+            {
+                var department = await db.Departments.FirstOrDefaultAsync(d => d.DeptId == id);
+                if(department != null)
+                {
+                    return View(department);
+                }
+            }
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Department department)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Departments.Update(department);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(department);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            
+            if (id > 0)
+            {
+                var department = await db.Departments.FirstOrDefaultAsync(d => d.DeptId ==id);
+
+                if (department != null) { 
+                    return View(department);
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpGet]
+        public IActionResult Delete(Department department)
+        {
+            //if (id > 0)
+            //{
+            //    var department = await db.Departments.FirstOrDefaultAsync(d => d.DeptId == id);
+
+            //    if (department != null)
+            //    {
+            //        return View(department);
+            //    }
+            //}
+            //return NotFound();
+
+            return View();
+            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id > 0)
+            {
+                var department = await db.Departments.FirstOrDefaultAsync(d => d.DeptId == id);
+
+                if (department != null)
+                {
+                    db.Departments.Remove(department);
+                    db.SaveChanges();
+                    return View(department);
+                }
+            }
+            return View(Index);
+        }
+
     }
 }
